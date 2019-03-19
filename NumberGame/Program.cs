@@ -39,11 +39,19 @@ namespace NumberGame
 
         static int[] Populate(int[] array)
         {
+            string input;
+
             //Iterate through the array, prompting the user for input each time
+            for (int i = 0; i < array.Length; i++)
+            {
+                Console.Write($"Please enter a number ({i + 1} of {array.Length}): ");
 
-            //Convert user input to an integer (store the response into a string first)
+                //Convert user input to an integer (store the response into a string first)
+                input = Console.ReadLine();
 
-            //Add the number to the array
+                //Add the number to the array
+                array[i] = Convert.ToInt32(input);
+            }
 
             //Return the populated array
             return array;
@@ -52,10 +60,16 @@ namespace NumberGame
         static int GetSum(int[] array)
         {
             //declare an int variable named sum
+            int sum = 0;
 
             //iterate through the array, adding each number to the sum
+            foreach (int num in array)
+            {
+                sum += num;
+            }
 
             //if the sum is less than 20, throw an exception
+            if (sum < 20) throw new Exception($"Value of {sum} is too low");
 
             //return sum
             return array[0];
