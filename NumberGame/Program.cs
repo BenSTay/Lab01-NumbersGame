@@ -7,20 +7,34 @@ namespace NumberGame
         static void StartSequence()
         {
             //Prompt user for input
-            
+            Console.WriteLine("Welcome to NumberGame! Let's crunch some numbers!");
+            Console.Write("Please enter a number greater than zero: ");
+            string input = Console.ReadLine();
+
             //Convert user input to int
+            int length = Convert.ToInt32(input);
 
             //Create new int array that is the size the user inputted
+            int[] array = new int[length];
 
             //Call populate using the array
+            array = Populate(array);
 
             //Get the sum with the GetSum method using the populated array
+            int sum = GetSum(array);
 
             //Get the product with the GetProduct method using the populated array and the sum
+            int product = GetProduct(array, sum);
 
             //Get the quotient using the GetQuotient method using the product
+            decimal quotient = GetQuotient(product);
 
             //Display the results to the console
+            Console.WriteLine($"Your array size: {length}");
+            Console.WriteLine(string.Join(", ", array));
+            Console.WriteLine($"The sum of these numbers is {sum}");
+            Console.WriteLine($"{sum} * {product / sum} = {product}");
+            Console.WriteLine($"{product} / {product / quotient} = {quotient}");
         }
 
         static int[] Populate(int[] array)
@@ -76,11 +90,13 @@ namespace NumberGame
             try
             {
                 StartSequence();
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine("Oops! Something went wrong!");
                 Console.WriteLine(ex.Message);
-            } finally
+            }
+            finally
             {
                 Console.WriteLine("Thank you for playing!");
             }
