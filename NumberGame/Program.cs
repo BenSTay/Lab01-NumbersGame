@@ -6,35 +6,93 @@ namespace NumberGame
     {
         static void StartSequence()
         {
+            int length, product;
+            decimal quotient;
+            int[] array;
+
             //Prompt user for input
             Console.WriteLine("Welcome to NumberGame! Let's crunch some numbers!");
             Console.Write("Please enter a number greater than zero: ");
             string input = Console.ReadLine();
 
             //Convert user input to int
-            int length = Convert.ToInt32(input);
+            try
+            {
+                length = Convert.ToInt32(input);
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("Continuing with default value 5");
+                length = 5;
+            }
 
             //Create new int array that is the size the user inputted
-            int[] array = new int[length];
+            try
+            {
+                array = new int[length];
+            }
+            catch (OverflowException ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("Continuing with default value 5");
+                array = new int[5];
+            }
+
 
             //Call populate using the array
-            array = Populate(array);
+            try
+            {
+                array = Populate(array);
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("Populating array with random values...");
+                Random rng = new Random();
+                for (int i = 0; i < array.Length; i++)
+                {
+                    if (array[i] == 0) array[i] = rng.Next(20, 100);
+                }
+            }
 
             //Get the sum with the GetSum method using the populated array
             int sum = GetSum(array);
 
+
             //Get the product with the GetProduct method using the populated array and the sum
-            int product = GetProduct(array, sum);
+            try
+            {
+                product = GetProduct(array, sum);
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("Using first array element for product...");
+                product = sum * array[0];
+            }
+
 
             //Get the quotient using the GetQuotient method using the product
-            decimal quotient = GetQuotient(product);
+            try
+            {
+                quotient = GetQuotient(product);
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("Using first array element as divisor...");
+                quotient = Decimal.Divide(product, array[0]);
+            }
 
             //Display the results to the console
             Console.WriteLine($"Your array size: {length}");
             Console.WriteLine($"Your array: {string.Join(", ", array)}");
             Console.WriteLine($"The sum of these numbers is {sum}");
             Console.WriteLine($"{sum} * {product / sum} = {product}");
-            Console.WriteLine($"{product} / {product / quotient} = {quotient}");
+            if (quotient != 0M) Console.WriteLine($"{product} / {product / quotient} = {quotient}");
+            else Console.WriteLine($"{product} / 0 = infinity");
+
         }
 
         static int[] Populate(int[] array)
@@ -86,7 +144,8 @@ namespace NumberGame
             index = Convert.ToInt32(input) - 1;
 
             //multiply sum by number at given index in array
-            product = sum * array[index];
+            if (index < 0 || index >= array.Length) throw new IndexOutOfRangeException($"{index + 1} is not a number between 1 and {array.Length}!");
+            else product = sum * array[index];
 
             //return product
             return product;
@@ -106,7 +165,15 @@ namespace NumberGame
             divisor = Convert.ToInt32(input);
 
             //divide the product by the inputted number
-            quotient = Decimal.Divide(product, divisor);
+            try
+            {
+                quotient = Decimal.Divide(product, divisor);
+            }
+            catch (DivideByZeroException ex)
+            {
+                Console.WriteLine(ex.Message);
+                quotient = 0M;
+            }
 
             //return the quotient
             return quotient;
