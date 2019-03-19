@@ -31,7 +31,7 @@ namespace NumberGame
 
             //Display the results to the console
             Console.WriteLine($"Your array size: {length}");
-            Console.WriteLine(string.Join(", ", array));
+            Console.WriteLine($"Your array: {string.Join(", ", array)}");
             Console.WriteLine($"The sum of these numbers is {sum}");
             Console.WriteLine($"{sum} * {product / sum} = {product}");
             Console.WriteLine($"{product} / {product / quotient} = {quotient}");
@@ -72,31 +72,44 @@ namespace NumberGame
             if (sum < 20) throw new Exception($"Value of {sum} is too low");
 
             //return sum
-            return array[0];
+            return sum;
         }
 
         static int GetProduct(int[] array, int sum)
         {
-            //prompt the user for numeric input between 1 and the arrays length
+            string input;
+            int index, product;
 
-            //declare new int variable 'product'
+            //prompt the user for numeric input between 1 and the arrays length
+            Console.Write($"Pick a number between 1 and {array.Length}: ");
+            input = Console.ReadLine();
+            index = Convert.ToInt32(input) - 1;
 
             //multiply sum by number at given index in array
+            product = sum * array[index];
 
             //return product
-            return sum;
+            return product;
         }
 
         static decimal GetQuotient(int product)
         {
+            string input;
+            int divisor;
+            decimal quotient;
+
             //prompt the user to enter a number to divide the product by (display the product)
+            Console.Write($"Enter a number to divide {product} by: ");
 
             //retrieve input and convert
+            input = Console.ReadLine();
+            divisor = Convert.ToInt32(input);
 
             //divide the product by the inputted number
+            quotient = Decimal.Divide(product, divisor);
 
             //return the quotient
-            return (decimal)product;
+            return quotient;
         }
 
         static void Main(string[] args)
